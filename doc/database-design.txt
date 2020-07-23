@@ -1,0 +1,27 @@
+USER Table
+- user_id -> primary key
+- display_name -> foreign key
+- points
+- rank
+- country
+============================================================
+get_user_profile (/user/profile/<user_guid>)[GET]
+create_user (/user/create)[POST]
+============================================================
+
+LEADERBOARD Table
+- display_name -> primary key
+- rank
+- points
+============================================================
+get_leaderboard (/leaderboard)[GET]
+get_leaderboard_by_country (/leaderboard/<country_iso_code>[GET]
+============================================================
+
+SCORE Table
+- user_id -> primary key
+- score_worth
+- timestamp
+============================================================
+submit_score(/score/submit)[POST]
+============================================================
