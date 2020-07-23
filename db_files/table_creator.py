@@ -2,7 +2,7 @@ from peewee import *
 from .db import db
 
 
-class User(Model):
+class Users(Model):
     user_id = CharField(unique=True)
     points = FloatField()
     rank = IntegerField()
