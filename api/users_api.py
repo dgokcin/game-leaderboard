@@ -1,7 +1,7 @@
 import uuid
 import sys
 
-from db_files.table_creator import *
+from db_files.models import *
 
 
 def create_user_profile(display_name, country):
@@ -36,8 +36,12 @@ def get_user_profile(guid):
     Returns the user object if the query is successful. A DoesNotExist
     exception is thrown if the user with the specified user does not exist.
     """
-    user = User.select(User.user_id,
-                       User.display_name,
-                       User.points,
-                       User.rank).where(User.user_id == guid).dicts().get()
-    return user
+    try:
+        user = User.select(User.user_id,
+                           User.display_name,
+                           User.points,
+                           User.rank).where(User.user_id == guid).dicts().get()
+        return user
+
+    except User.DoesNotExist:
+        return None
