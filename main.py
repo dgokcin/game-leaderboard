@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.before_first_request
 def _db_connect_and_create_tables():
     db.connect()
-    db.create_tables([Users])
+    db.create_tables([User, Score])
     db.close()
 
 @app.before_request
@@ -21,7 +21,8 @@ def hello():
 
 @app.route('/profile/<guid>')
 def get_user(guid):
-    return jsonify({'user_guid': guid})
+    user = get_user_profile(guid)
+    return jsonify(user)
 
 
 if __name__ == '__main__':
