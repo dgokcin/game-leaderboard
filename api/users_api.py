@@ -1,18 +1,26 @@
-import uuid
-import sys
-
 from db_files.models import *
 
 
-def create_user_profile(display_name, country):
-    try:
-        guid = uuid.uuid4()
-        points = 0
-        rank = sys.maxsize
-        country = country
-        display_name = display_name
+# TODO add docstring comments
+def create_user_profile(user_id, display_name, points, rank, country):
+    """
+    This method posts to the User database.
 
-        User.create(user_id=guid, points=points, rank=rank,
+    Parameters
+    ----------
+    :param user_id:
+    :param display_name:
+    :param points:
+    :param rank:
+    :param country:
+
+    Returns
+    -------
+    success : bool
+
+    """
+    try:
+        User.create(user_id=user_id, points=points, rank=rank,
                     country=country, display_name=display_name)
         return True
 

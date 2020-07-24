@@ -1,3 +1,5 @@
+import sys
+
 from peewee import *
 from .db import db
 
@@ -8,11 +10,11 @@ class BaseModel(Model):
 
 
 class User(BaseModel):
-    user_id = CharField(unique=True)
-    points = FloatField()
+    user_id = UUIDField(primary_key=True, unique=True)
+    points = FloatField(default=0)
     rank = IntegerField()
     country = CharField()
-    display_name = CharField()
+    display_name = CharField(unique=True)
 
 
 class Score(BaseModel):
