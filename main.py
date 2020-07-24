@@ -19,7 +19,7 @@ def hello():
     return jsonify({'message': 'Hello world!'})
 
 
-@app.route('/profile/<guid>')
+@app.route('/profile/<guid>', methods=['GET'])
 def get_user(guid):
     user = get_user_profile(guid)
     return jsonify(user)

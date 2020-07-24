@@ -21,13 +21,23 @@ def create_user_profile(display_name, country):
 
 
 def get_user_profile(guid):
-    try:
-        user = User.select(User.user_id,
-                           User.display_name,
-                           User.points,
-                           User.rank).where(User.user_id == guid).dicts().get()
-        return user
-    except User.DoesNotExist as e:
-        print(e)
-        return False
+    """
+    This method gets the profile of a specific user with a select query to
+    the User table
 
+    Parameters
+    ----------
+    guid : string
+
+    Returns
+    -------
+    user : User
+
+    Returns the user object if the query is successful. A DoesNotExist
+    exception is thrown if the user with the specified user does not exist.
+    """
+    user = User.select(User.user_id,
+                       User.display_name,
+                       User.points,
+                       User.rank).where(User.user_id == guid).dicts().get()
+    return user

@@ -14,7 +14,7 @@ class TestUserMethods(unittest.TestCase):
 
         self.assertEqual(success, True)
 
-    def test_get_user_profile(self):
+    def test_get_valid_user_profile(self):
         guid = "5b69053b-8a51-42c1-b6cf-4473c4c0bede"
         user = get_user_profile(guid)
         expected = {'user_id': '5b69053b-8a51-42c1-b6cf-4473c4c0bede',
@@ -22,6 +22,10 @@ class TestUserMethods(unittest.TestCase):
                     'points': 0.0, 'rank': 2147483647}
 
         self.assertEqual(user, expected)
+
+    def test_get_invalid_user_profile(self):
+        guid = "invalid_guid"
+        self.assertRaises(User.DoesNotExist, get_user_profile, guid)
 
 
 if __name__ == '__main__':
