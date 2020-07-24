@@ -1,7 +1,9 @@
+from datetime import datetime
 import uuid
 import sys
 from flask import Flask, jsonify, request, redirect, url_for
 from api.users_api import *
+from api.score_api import *
 
 app = Flask(__name__)
 
@@ -40,9 +42,28 @@ def create_user():
     try:
         create_user_profile(user_id, display_name, points, rank, country)
         resp = jsonify(success=True)
-    # TODO: Improve how you handle the exception, it is too generic
-    # TODO: Handle default values & problematic entries
-    except Exception:
+    # TODO: The default values & problematic entries could be handled better.
+    except IntegrityError:
+        resp = jsonify(success=False)
+
+    return resp
+
+
+@app.route('/score/submit', methods=['POST'])
+def submit_score():
+    user_id = request.form.get('user_id')
+    score_worth = request.form.get('score_worth')
+    now = datetime.now()
+    current_date_parsed = datetime(now.year, now.month, now.day, now.hour,
+                                   0, 0)
+    timestamp = request.form.get('timestamp') or datetime.timestamp(
+        current_date_parsed)
+
+    try:
+        submit_score_to_db(user_id, score_worth, timestamp)
+        resp = jsonify(success=True)
+
+    except IntegrityError:
         resp = jsonify(success=False)
 
     return resp

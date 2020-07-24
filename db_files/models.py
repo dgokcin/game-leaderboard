@@ -18,6 +18,6 @@ class User(BaseModel):
 
 
 class Score(BaseModel):
-    user_id = ForeignKeyField(User, backref='score')
+    user_id = ForeignKeyField(User, backref='score', unique=True)
     score_worth = FloatField()
-    timestamp = DateTimeField()
+    timestamp = CharField()
