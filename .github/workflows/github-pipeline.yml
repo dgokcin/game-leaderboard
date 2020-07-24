@@ -41,7 +41,13 @@ jobs:
         DB_NAME: GJG
         DB_USER: root
         DB_PASSWORD: root
-    - name: Build and push Docker images
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build and push to Dockerhub
       uses: docker/build-push-action@v1
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
