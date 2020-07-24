@@ -48,3 +48,4 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         repository: denizgokcin/gjg-backend-challenge-app
         tags: latest
+        tag_with_sha: true
