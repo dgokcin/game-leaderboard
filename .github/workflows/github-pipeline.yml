@@ -41,3 +41,15 @@ jobs:
         DB_NAME: GJG
         DB_USER: root
         DB_PASSWORD: root
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: myorg/myrepository
+          tags: latest
