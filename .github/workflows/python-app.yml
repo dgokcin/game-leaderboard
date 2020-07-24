@@ -34,3 +34,9 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+      env:
+        DB_HOST: 0.0.0.0
+        DB_PORT: 3306
+        DB_NAME: GJG
+        DB_USER: root
+        DB_PASSWORD: root
