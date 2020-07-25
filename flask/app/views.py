@@ -50,6 +50,13 @@ def get_leaderboard():
     return leaderboard.to_json()
 
 
+@app.route('/leaderboard/<iso>', methods=['GET'])
+def get_leaderboard_by_country(iso):
+    leaderboard = User.objects(country=iso).exclude('user_id').order_by(
+        'rank')
+    return leaderboard.to_json()
+
+
 @app.route('/score/submit', methods=['POST'])
 def submit_score():
     user_id = request.form.get('user_id')
