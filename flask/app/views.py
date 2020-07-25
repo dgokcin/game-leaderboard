@@ -44,9 +44,14 @@ def get_user_profile(guid):
     return user.to_json()
 
 
+@app.route('/leaderboard', methods=['GET'])
+def get_leaderboard():
+    leaderboard = User.objects.exclude('user_id').order_by('rank')
+    return leaderboard.to_json()
+
+
 @app.route('/score/submit', methods=['POST'])
 def submit_score():
-
     user_id = request.form.get('user_id')
     score_worth = request.form.get('score_worth')
     timestamp = request.form.get('timestamp')
