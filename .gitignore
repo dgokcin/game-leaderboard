@@ -130,4 +130,5 @@ dmypy.json
 
 # Other Stuff
 .idea/
-mysql-data
+container_volumes
+container_logs

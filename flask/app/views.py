@@ -2,7 +2,7 @@ import sys
 import uuid
 
 from app import app
-from app.models import Score, User
+from app.models import User
 
 from flask import request, jsonify
 
@@ -46,11 +46,12 @@ def get_user_profile(guid):
 
 @app.route('/score/submit', methods=['POST'])
 def submit_score():
-    Score(
-        user_id=request.form.get('user_id') or str(uuid.uuid4()),
-        score_worth=request.form.get('score_worth'),
-        timestamp=request.form.get('timestamp')
-    ).save()
+
+    user_id = request.form.get('user_id')
+    score_worth = request.form.get('score_worth')
+    timestamp = request.form.get('timestamp')
+
+    User.objects(user_id=user_id).update_one(inc__points=score_worth)
 
     return jsonify(
         status=True,
