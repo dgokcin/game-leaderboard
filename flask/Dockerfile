@@ -4,10 +4,11 @@ ENV REDIS_PW = "root"
 ENV MONGO_USERNAME = "root"
 ENV MONGO_PASSWORD = "example"
 
-ADD . /code
-
 WORKDIR /code
 
+COPY requirements.txt /code
 RUN pip install -r requirements.txt
+
+ADD . /code
 
 CMD ["uwsgi", "wsgi.ini"]

@@ -1,10 +1,10 @@
-import uuid
 import sys
+import uuid
 
 from app import app
-from app.models import Message, User
+from app.models import Score, User
 
-from flask import render_template, request, redirect, url_for, jsonify
+from flask import request, jsonify
 
 
 @app.route("/")
@@ -36,41 +36,24 @@ def create_user():
 def get_all_users():
     users = User.objects()
     return users.to_json()
-#
-#
-# @app.route('/user/create', methods=['post'])
-# def create_user():
-#     user_id = request.form.get('user_id') or str(uuid.uuid4())
-#     display_name = request.form.get('display_name')
-#     points = request.form.get('points') or 0
-#     rank = request.form.get('rank') or sys.maxsize
-#     country = request.form.get('country') or 'tr'
-#
-#     try:
-#         create_user_profile(user_id, display_name, points, rank, country)
-#         resp = jsonify(success=true)
-#     # todo: the default values & problematic entries could be handled better.
-#     except integrityerror:
-#         resp = jsonify(success=false)
-#
-#     return resp
-#
-#
-# @app.route('/score/submit', methods=['POST'])
-# def submit_score():
-#     user_id = request.form.get('user_id')
-#     score_worth = request.form.get('score_worth')
-#     now = datetime.now()
-#     current_date_parsed = datetime(now.year, now.month, now.day, now.hour,
-#                                    0, 0)
-#     timestamp = request.form.get('timestamp') or datetime.timestamp(
-#         current_date_parsed)
-#
-#     try:
-#         submit_score_to_db(user_id, score_worth, timestamp)
-#         resp = jsonify(success=True)
-#
-#     except IntegrityError:
-#         resp = jsonify(success=False)
-#
-#     return resp
+
+
+@app.route('/profile/<guid>', methods=['GET'])
+def get_user_profile(guid):
+    user = User.objects(user_id=guid)
+    return user.to_json()
+
+
+@app.route('/score/submit', methods=['POST'])
+def submit_score():
+    Score(
+        user_id=request.form.get('user_id') or str(uuid.uuid4()),
+        score_worth=request.form.get('score_worth'),
+        timestamp=request.form.get('timestamp')
+    ).save()
+
+    return jsonify(
+        status=True,
+        message='Score Submitted'
+    )
+
