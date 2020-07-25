@@ -1,7 +1,7 @@
 import uuid
+import sys
 
 from app import app
-import sys
 from app.models import Message, User
 
 from flask import render_template, request, redirect, url_for, jsonify
@@ -16,49 +16,29 @@ def index():
     )
 
 
+@app.route("/user/create", methods=["POST"])
+def create_user():
+    User(
+            user_id=request.form.get('user_id') or str(uuid.uuid4()),
+            display_name=request.form.get('display_name'),
+            points=request.form.get('points') or 0,
+            rank=request.form.get('rank') or sys.maxsize,
+            country=request.form.get('country') or 'tr'
+    ).save()
 
-@app.route("/guestbook", methods=["GET", "POST"])
-def guestbook():
-
-    messages = Message.objects()
-
-    if request.method == "POST":
-        
-        Message(
-            name=request.form.get("name"),
-            message=request.form.get("message")
-        ).save()
+    return jsonify(
+        status=True,
+        message='User Created'
+    )
 
 
-    return render_template("guestbook.html", messages=messages)
-
-
-@app.route("/test", methods=["GET", "POST"])
-def user_stuff():
+@app.route('/users', methods=['GET'])
+def get_all_users():
     users = User.objects()
-
-    if request.method == "POST":
-        User(
-                user_id=request.form.get('user_id') or str(uuid.uuid4()),
-                display_name=request.form.get('display_name'),
-                points=request.form.get('points') or 0,
-                rank=request.form.get('rank') or sys.maxsize,
-                country=request.form.get('country') or 'tr'
-        ).save()
-
-        return jsonify(
-            status=True,
-            message='Successful Post'
-        )
-
     return users.to_json()
-# @app.route('/profile/<guid>', methods=['GET'])
-# def get_user(guid):
-#     user = get_user_profile(guid)
-#     return jsonify(user)
 #
 #
-# @app.route('/user/create', methods=['POST'])
+# @app.route('/user/create', methods=['post'])
 # def create_user():
 #     user_id = request.form.get('user_id') or str(uuid.uuid4())
 #     display_name = request.form.get('display_name')
@@ -68,10 +48,10 @@ def user_stuff():
 #
 #     try:
 #         create_user_profile(user_id, display_name, points, rank, country)
-#         resp = jsonify(success=True)
-#     # TODO: The default values & problematic entries could be handled better.
-#     except IntegrityError:
-#         resp = jsonify(success=False)
+#         resp = jsonify(success=true)
+#     # todo: the default values & problematic entries could be handled better.
+#     except integrityerror:
+#         resp = jsonify(success=false)
 #
 #     return resp
 #
