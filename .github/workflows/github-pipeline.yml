@@ -47,6 +47,6 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
         repository: denizgokcin/gjg-backend-challenge-app
-        dockerfile: flask/Dockerfile
+        path: flask
         tags: latest
         tag_with_sha: true
