@@ -1,24 +1,33 @@
-version: "3.1"
-services:
-  app:
-    build: .
-    depends_on:
-      - db
-    links:
-      - db
-    ports:
-      - "5000:5000"
-    env_file:
-      - db_files/app.env
-  db:
-    image: mysql:5.7.31
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-    volumes:
-      - ./db_init:/docker-entrypoint-initdb.d/:ro
-      - ./mysql-data:/var/lib/mysql
-volumes:
-    mysql-data:
+version: "3.7"
 
+services:
+
+  mongo:
+    image: mongo:4.0.8
+    container_name: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - "~/container_volumes/mongo/data/db:/data/db"
+      - "~/container_logs/mongo/log:/var/log/mongodb"
+  redis:
+    image: redis
+    command: redis-server --requirepass root
+    container_name: redis
+    restart: always
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - "~/container_logs/nginx/log:/var/log/nginx"
+  flask:
+    build: ./flask
+    container_name: flask
+    restart: always
+    volumes:
+      - "~/container_logs/flask/log:/var/log/wsgi"
