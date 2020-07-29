@@ -9,6 +9,6 @@ WORKDIR /code
 COPY requirements.txt /code
 RUN pip install -r requirements.txt
 
-ADD . /code
+COPY . /code
 
 CMD ["uwsgi", "wsgi.ini"]

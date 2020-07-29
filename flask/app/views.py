@@ -64,6 +64,9 @@ def submit_score():
     timestamp = request.form.get('timestamp')
 
     User.objects(user_id=user_id).update_one(inc__points=score_worth)
+    threshold = User.objects(user_id=user_id).first().points
+    new_rank = User.objects(points__lt=threshold).update(inc__rank=1)
+    User.objects(user_id=user_id).update_one(inc__rank=-new_rank)
 
     return jsonify(
         status=True,
