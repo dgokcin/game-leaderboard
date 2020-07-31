@@ -1,77 +1,125 @@
 import unittest
-from mongoengine.connection import connect, disconnect
-from mongoengine import UUIDField, FloatField, IntField, StringField, Document
+import uuid
+import redis
+
+from app.handlers import users
+from app.handlers import leaderboard
+from app.handlers import score
 
 
-class User(Document):
-    user_id = UUIDField(primary_key=True)
-    points = FloatField()
-    rank = IntField()
-    country = StringField()
-    display_name = StringField(unique=True)
-
-
-class TestPerson(unittest.TestCase):
+class TestUserIntegrations(unittest.TestCase):
 
     def setUp(self):
-        self.connection = connect(db='test', host='mongomock://localhost')
+        self.r = redis.StrictRedis(decode_responses=True)
 
     def tearDown(self):
-        self.connection.drop_database("test")
+        self.r.flushall()
 
     def test_create_user(self):
-        User(user_id='1376a111fba449bb800b3f0bca64b3a3',
-             display_name='deniz',
-             points=1000,
-             rank=1,
-             country='tr').save()
+        users.register_user(self.r,
+                            user_id=str(uuid.uuid4()),
+                            display_name='deniz',
+                            points=10,
+                            rank=1,
+                            country='tr')
 
-        usr = User.objects().first()
-        self.assertEqual(usr.display_name, 'deniz')
+        self.assertEqual(1, self.r.zcard("leaderboard"))
+
+    def test_get_user_profile(self):
+        guid = "1"
+        users.register_user(self.r,
+                            user_id=guid,
+                            display_name='deniz',
+                            points=10,
+                            rank=1,
+                            country='tr')
+
+        expected = {
+            'user_id': guid,
+            'display_name': "deniz",
+            'points': 10,
+            'rank': 1,
+            'country': "tr"
+        }
+
+        self.assertEqual(expected, users.get_user_profile(self.r, guid))
 
     def test_update_user_score(self):
-        User(user_id='1376a111fba449bb800b3f0bca64b3a3',
-             display_name='deniz',
-             points=1000,
-             rank=1,
-             country='tr').save()
+        guid = "1"
+        users.register_user(self.r,
+                            user_id=guid,
+                            display_name='deniz',
+                            points=10,
+                            rank=1,
+                            country='tr')
 
+        score.update_user_score(self.r, guid, 15)
 
-        User(user_id='1376a111fba449bb800b3f0bca64b3a4',
-             display_name='user_2',
-             points=900,
-             rank=2,
-             country='fr').save()
+        self.assertEqual("25", self.r.hget("player:" + guid, "points"))
 
-        User.objects(user_id='1376a111fba449bb800b3f0bca64b3a3').update_one(inc__points=15)
+    def test_get_leaderboard(self):
+        users.register_user(self.r,
+                            user_id="1",
+                            display_name='deniz',
+                            points=10,
+                            rank=1,
+                            country='tr')
 
-        usr = User.objects().first()
-        self.assertEqual(usr.points, 1015)
+        users.register_user(self.r,
+                            user_id="2",
+                            display_name='test',
+                            points=6,
+                            rank=2,
+                            country='fr')
 
-    def test_update_user_rank(self):
-        User(user_id='1376a111fba449bb800b3f0bca64b3a1',
-             display_name='user_1',
-             points=1000,
-             rank=1,
-             country='tr').save()
+        # Increment Score
+        self.r.zincrby("leaderboard", 10000, "player:2")
 
-        User(user_id='1376a111fba449bb800b3f0bca64b3a2',
-             display_name='user_2',
-             points=900,
-             rank=2,
-             country='fr').save()
+        expected = [
+            {
+                "rank": 1,
+                "points": 10006.0,
+                "display_name": "test",
+                "country": "fr"
+            },
+            {
+                "rank": 2,
+                "points": 10.0,
+                "display_name": "deniz",
+                "country": "tr"
+            }
+        ]
+        self.assertEqual(expected, leaderboard.generate_leaderboard(self.r))
 
-        User(user_id='1376a111fba449bb800b3f0bca64b3a3',
-             display_name='user_3',
-             points=800,
-             rank=3,
-             country='tr').save()
+    def test_get_leaderboard_by_country(self):
+        users.register_user(self.r,
+                            user_id="1",
+                            display_name='deniz',
+                            points=10,
+                            rank=1,
+                            country='tr')
 
-        User.objects(display_name='user_3').update_one(inc__points=201)
-        threshold = User.objects(display_name='user_3').first().points
-        new_rank = User.objects(points__lt=threshold).update(inc__rank=1)
-        User.objects(display_name='user_3').update_one(inc__points=-new_rank)
+        users.register_user(self.r,
+                            user_id="2",
+                            display_name='test',
+                            points=6,
+                            rank=2,
+                            country='fr')
 
+        # Increment Score
+        self.r.zincrby("leaderboard", 10000, "player:2")
+
+        expected = [
+            {
+                "rank": 2,
+                "points": 10.0,
+                "display_name": "deniz",
+                "country": "tr"
+            }
+        ]
+        self.assertEqual(expected,
+                         leaderboard.generate_leaderboard_by_country(self.r,
+                                                                     "tr"))
 
 
 if __name__ == '__main__':

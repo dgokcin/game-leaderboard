@@ -6,11 +6,12 @@ import os
 
 app = Flask(__name__)
 
-r = redis.Redis(
+r = redis.StrictRedis(
     host='redis',
     port=6379,
     db=0,
-    password="root"
+    password="root",
+    decode_responses=True
 )
 
 connect(

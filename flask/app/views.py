@@ -1,10 +1,9 @@
 import sys
 import uuid
+from flask import request, jsonify
 
 from app import app
-from app.models import User
 
-from flask import request, jsonify
 
 
 @app.route("/")
@@ -63,10 +62,13 @@ def submit_score():
     score_worth = request.form.get('score_worth')
     timestamp = request.form.get('timestamp')
 
+    # threshold_min = User.objects(user_id=user_id).first().points
     User.objects(user_id=user_id).update_one(inc__points=score_worth)
-    threshold = User.objects(user_id=user_id).first().points
-    new_rank = User.objects(points__lt=threshold).update(inc__rank=1)
-    User.objects(user_id=user_id).update_one(inc__rank=-new_rank)
+    # threshold_max = User.objects(user_id=user_id).first().points
+    # new_rank = User.objects(points__in=range(int(threshold_min),
+    #                                          int(threshold_max))).update(
+    #     inc__rank=1)
+    # User.objects(user_id=user_id).update_one(inc__rank=-new_rank)
 
     return jsonify(
         status=True,
