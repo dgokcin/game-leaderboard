@@ -36,6 +36,7 @@ jobs:
         pytest
       # Dummy environment variables.
       env:
+        PYTHONPATH: $PYTHONPATH:/flask
         DB_HOST: 0.0.0.0
         DB_PORT: 3306
         DB_NAME: GJG
