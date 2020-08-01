@@ -15,7 +15,7 @@ A REST API endpoint, that manages a game which uses a leaderboard with players s
 ```
 flask: Contains the Flask application and uWSGI application server.
 nginx: Contains the Nginx web server.
-redis: Stores information about users & leaderboard.
+redis: Stores information about users & handles leaderboard interactions.
 github actions: Automatically running ptyests and deploying to DockerHub.
 ```
 - The containers can be found under my [docker-hub account](https://hub.docker.com/u/denizgokcin)
