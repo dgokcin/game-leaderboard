@@ -1,6 +1,7 @@
 import unittest
 import uuid
 import redis
+import fakeredis
 
 from app.handlers import users
 from app.handlers import leaderboard
@@ -10,8 +11,7 @@ from app.handlers import score
 class TestUserIntegrations(unittest.TestCase):
 
     def setUp(self):
-        self.r = redis.StrictRedis(decode_responses=True,
-                                   password='root')
+        self.r = fakeredis.FakeStrictRedis(decode_responses=True)
 
     def tearDown(self):
         self.r.flushall()
@@ -56,6 +56,7 @@ class TestUserIntegrations(unittest.TestCase):
 
         score.update_user_score(self.r, guid, 15)
 
+        pass
         self.assertEqual("25", self.r.hget("player:" + guid, "points"))
 
     def test_get_leaderboard(self):
