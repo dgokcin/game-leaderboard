@@ -20,16 +20,16 @@ def index():
 
 @app.route("/user/create", methods=["POST"])
 def create_user():
-    user_id = request.form.get('user_id') or str(uuid.uuid4())
-    display_name = request.form.get('display_name')
-    points = request.form.get('points') or 0,
-    rank = request.form.get('rank') or sys.maxsize,
-    country = request.form.get('country') or 'tr'
+    # headers = request.headers
+    # print(headers)
+    user_id = str(uuid.uuid4())
+    display_name = str(request.headers.get('display-name'))
+    points = float(request.headers.get('points')) or 0,
+    rank = int(request.headers.get('rank')) or sys.maxsize,
+    country = str(request.headers.get('country')) or 'tr'
 
-    users.register_user(r, str(user_id), str(display_name), float(points[0]),
-                        int(rank[
-                                                                          0]),
-                        country)
+    users.register_user(r, user_id, display_name, float(points[0]),
+                        int(rank[0]), country)
 
     return jsonify(
         status=True,
@@ -58,8 +58,8 @@ def get_leaderboard_by_country(iso):
 
 @app.route('/score/submit', methods=['POST'])
 def submit_score():
-    user_id = request.form.get('user_id')
-    score_worth = request.form.get('score_worth')
+    user_id = request.form.get('user-id')
+    score_worth = request.form.get('score-worth')
     # TODO maybe use this field as well
     timestamp = request.form.get('timestamp')
 
