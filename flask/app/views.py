@@ -20,20 +20,21 @@ def index():
 
 @app.route("/user/create", methods=["POST"])
 def create_user():
-    # headers = request.headers
-    # print(headers)
-    user_id = str(request.headers.get('user-id')) or str(uuid.uuid4())
-    display_name = str(request.headers.get('display-name'))
-    points = float(request.headers.get('points')) or 0,
-    rank = int(request.headers.get('rank')) or sys.maxsize,
-    country = str(request.headers.get('country')) or 'tr'
+    json_data = request.get_json(silent=True, force=True)
 
-    users.register_user(r, user_id, display_name, float(points[0]),
-                        int(rank[0]), country)
+    for u in json_data:
+        user_id = u["user_id"] or str(uuid.uuid4())
+        display_name = u["display_name"]
+        points = u["points"] or 0
+        rank = u["rank"] or sys.maxsize
+        country = u["country"] or 'tr'
+
+        users.register_user(r, user_id, display_name, float(points),
+                            int(rank), country)
 
     return jsonify(
         status=True,
-        message='User Created with id:' + user_id
+        message='User(s) are created'
     )
 
 
@@ -57,10 +58,13 @@ def get_leaderboard_by_country(iso):
 
 @app.route('/score/submit', methods=['POST'])
 def submit_score():
-    user_id = str(request.headers['user-id'])
-    score_worth = float(request.headers.get('score-worth'))
+    json_data = request.get_json(silent=True, force=True)
+
+    user_id = json_data["user_id"] or str(uuid.uuid4())
+    score_worth = json_data["score_worth"]
+
     # TODO maybe use this field as well
-    timestamp = request.headers.get('timestamp')
+    timestamp = json_data["timestamp"] or 0,
 
     score.update_user_score(r, user_id, score_worth)
 
