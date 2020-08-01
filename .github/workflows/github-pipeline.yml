@@ -41,12 +41,21 @@ jobs:
         DB_NAME: GJG
         DB_USER: root
         DB_PASSWORD: root
-    - name: Build and push Docker images
+    - name: Build and push flask-app
       uses: docker/build-push-action@v1
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
         repository: denizgokcin/gjg-backend-challenge-app
         path: flask
+        tags: latest
+        tag_with_sha: true
+    - name: Build and push nginx
+      uses: docker/build-push-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        repository: denizgokcin/gjg-backend-challenge-nginx
+        path: nginx
         tags: latest
         tag_with_sha: true
