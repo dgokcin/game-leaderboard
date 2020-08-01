@@ -1,9 +1,12 @@
 import sys
 import uuid
+import json
 from flask import request, jsonify
 
-from app import app
-
+from app import app, r
+from app.handlers import users
+from app.handlers import score
+from app.handlers import leaderboard as leaderboard
 
 
 @app.route("/")
@@ -11,67 +14,58 @@ def index():
 
     return jsonify(
         status=True,
-        message='Welcome to the Dockerized Flask MongoDB app!'
+        message='Welcome to the Dockerized Flask redis app!'
     )
 
 
 @app.route("/user/create", methods=["POST"])
 def create_user():
-    User(
-            user_id=request.form.get('user_id') or str(uuid.uuid4()),
-            display_name=request.form.get('display_name'),
-            points=request.form.get('points') or 0,
-            rank=request.form.get('rank') or sys.maxsize,
-            country=request.form.get('country') or 'tr'
-    ).save()
+    user_id = request.form.get('user_id') or str(uuid.uuid4())
+    display_name = request.form.get('display_name')
+    points = request.form.get('points') or 0,
+    rank = request.form.get('rank') or sys.maxsize,
+    country = request.form.get('country') or 'tr'
+
+
+    users.register_user(r, user_id, display_name, float(points[0]), int(rank[
+                                                                          0]),
+                        country)
 
     return jsonify(
         status=True,
-        message='User Created'
+        message='User Created with id:' + user_id
     )
 
-
-@app.route('/users', methods=['GET'])
-def get_all_users():
-    users = User.objects()
-    return users.to_json()
 
 
 @app.route('/profile/<guid>', methods=['GET'])
 def get_user_profile(guid):
-    user = User.objects(user_id=guid)
-    return user.to_json()
+    user = users.get_user_profile(r, guid)
+    return json.dumps(user)
 
 
 @app.route('/leaderboard', methods=['GET'])
 def get_leaderboard():
-    leaderboard = User.objects.exclude('user_id').order_by('rank')
-    return leaderboard.to_json()
+    lb = leaderboard.generate_leaderboard(r)
+    return json.dumps(lb)
 
 
 @app.route('/leaderboard/<iso>', methods=['GET'])
 def get_leaderboard_by_country(iso):
-    leaderboard = User.objects(country=iso).exclude('user_id').order_by(
-        'rank')
-    return leaderboard.to_json()
+    lb = leaderboard.generate_leaderboard_by_country(r, iso)
+    return json.dumps(lb)
 
 
 @app.route('/score/submit', methods=['POST'])
 def submit_score():
     user_id = request.form.get('user_id')
     score_worth = request.form.get('score_worth')
+    # TODO maybe use this field as well
     timestamp = request.form.get('timestamp')
 
-    # threshold_min = User.objects(user_id=user_id).first().points
-    User.objects(user_id=user_id).update_one(inc__points=score_worth)
-    # threshold_max = User.objects(user_id=user_id).first().points
-    # new_rank = User.objects(points__in=range(int(threshold_min),
-    #                                          int(threshold_max))).update(
-    #     inc__rank=1)
-    # User.objects(user_id=user_id).update_one(inc__rank=-new_rank)
+    score.update_user_score(r, user_id, score_worth)
 
     return jsonify(
         status=True,
         message='Score Submitted'
     )
-

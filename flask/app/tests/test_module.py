@@ -10,7 +10,8 @@ from app.handlers import score
 class TestUserIntegrations(unittest.TestCase):
 
     def setUp(self):
-        self.r = redis.StrictRedis(decode_responses=True)
+        self.r = redis.StrictRedis(decode_responses=True,
+                                   password='root')
 
     def tearDown(self):
         self.r.flushall()

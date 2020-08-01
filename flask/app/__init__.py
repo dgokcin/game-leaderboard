@@ -1,8 +1,5 @@
 from flask import Flask
 import redis
-from mongoengine import connect
-
-import os
 
 app = Flask(__name__)
 
@@ -14,16 +11,15 @@ r = redis.StrictRedis(
     decode_responses=True
 )
 
-connect(
-    db="flask-db",
-    host="mongo",
-    port=27017,
-    username="root",
-    password="root",
-    authentication_source="admin",
-    connect=False
-)
+# connect(
+#     db="flask-db",
+#     host="mongo",
+#     port=27017,
+#     username="root",
+#     password="root",
+#     authentication_source="admin",
+#     connect=False
+# )
 
 
 from app import views
-from app import models
