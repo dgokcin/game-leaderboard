@@ -3,12 +3,14 @@ import uuid
 
 def register_user(r, user_id, display_name, points, rank, country):
     user = {
-        'user_id': user_id or str(uuid.uuid4()),
+        'user_id': user_id,
         'display_name': display_name,
         'points': points or 0,
         'rank': rank,
         'country': country or "tr"
     }
+
+    print(user)
 
     r.hmset("player:" + user['user_id'], user)
     r.set(user["country"], user['user_id'])

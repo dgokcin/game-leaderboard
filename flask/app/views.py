@@ -26,7 +26,8 @@ def create_user():
     rank = request.form.get('rank') or sys.maxsize,
     country = request.form.get('country') or 'tr'
 
-    users.register_user(r, user_id, display_name, float(points[0]), int(rank[
+    users.register_user(r, str(user_id), str(display_name), float(points[0]),
+                        int(rank[
                                                                           0]),
                         country)
 
