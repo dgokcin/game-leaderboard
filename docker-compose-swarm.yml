@@ -1,0 +1,38 @@
+version: "3.7"
+
+services:
+  flask:
+    image: denizgokcin/gjg-backend-challenge-app
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - redis
+    networks:
+      - app
+  redis:
+    image: redis:6.0.6
+    command: redis-server --requirepass root
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - app
+
+  nginx:
+    image: denizgokcin/gjg-backend-challenge-nginx
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    ports:
+      - 80:80
+    depends_on:
+      - flask
+    networks:
+      - app
+networks:
+  app:
+    driver: overlay
