@@ -1,23 +1,13 @@
 version: "3.7"
 
 services:
-
-  mongo:
-    image: mongo:4.0.8
-    container_name: mongo
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root
-    volumes:
-      - "./container_volumes/mongo/data/db:/data/db"
-      - "./container_logs/mongo/log:/var/log/mongodb"
   redis:
-    image: redis
+    image: redis:6.0.6
     command: redis-server --requirepass root
     container_name: redis
     restart: always
   nginx:
+    image: denizgokcin/gjg-backend-challenge-nginx
     build: ./nginx
     container_name: nginx
     restart: always
@@ -26,6 +16,7 @@ services:
     volumes:
       - "./container_logs/nginx/log:/var/log/nginx"
   flask:
+    image: denizgokcin/gjg-backend-challenge-app
     build: ./flask
     container_name: flask
     restart: always
