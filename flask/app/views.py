@@ -22,7 +22,7 @@ def index():
 def create_user():
     # headers = request.headers
     # print(headers)
-    user_id = str(uuid.uuid4())
+    user_id = str(request.headers.get('user-id')) or str(uuid.uuid4())
     display_name = str(request.headers.get('display-name'))
     points = float(request.headers.get('points')) or 0,
     rank = int(request.headers.get('rank')) or sys.maxsize,
@@ -35,7 +35,6 @@ def create_user():
         status=True,
         message='User Created with id:' + user_id
     )
-
 
 
 @app.route('/profile/<guid>', methods=['GET'])
@@ -58,10 +57,10 @@ def get_leaderboard_by_country(iso):
 
 @app.route('/score/submit', methods=['POST'])
 def submit_score():
-    user_id = request.form.get('user-id')
-    score_worth = request.form.get('score-worth')
+    user_id = str(request.headers['user-id'])
+    score_worth = float(request.headers.get('score-worth'))
     # TODO maybe use this field as well
-    timestamp = request.form.get('timestamp')
+    timestamp = request.headers.get('timestamp')
 
     score.update_user_score(r, user_id, score_worth)
 
