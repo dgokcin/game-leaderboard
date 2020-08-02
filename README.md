@@ -19,6 +19,9 @@ redis: Stores information about users & handles leaderboard interactions.
 ```
 - The containers can be found under my [docker-hub account](https://hub.docker.com/u/denizgokcin)
 
+### Documentation
+- The documentation can be found [here]()
+
 ### Building
 `docker-compose up -d`
 

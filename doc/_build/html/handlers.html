@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>handlers package &#8212; gjg-backend-challenge 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to handlers’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="handlers-package">
+<h1>handlers package<a class="headerlink" href="#handlers-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-handlers.leaderboard">
+<span id="handlers-leaderboard-module"></span><h2>handlers.leaderboard module<a class="headerlink" href="#module-handlers.leaderboard" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="handlers.leaderboard.generate_leaderboard">
+<code class="sig-prename descclassname">handlers.leaderboard.</code><code class="sig-name descname">generate_leaderboard</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">r</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/handlers/leaderboard.html#generate_leaderboard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#handlers.leaderboard.generate_leaderboard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the global leaderboard. Due to the use of sorted sets, as the
+data structure for the leaderboard, the time complezity of obtaining the
+leaderboard takes O(log(N)+M)  with N being the number of elements in
+the sorted set and M the number of elements returned.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Parameters:</dt><dd><p>r (RedisClient): Redis Client</p>
+</dd>
+<dt>Returns:</dt><dd><p>leaderboard (list): The leaderboard as a list of dicts</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt id="handlers.leaderboard.generate_leaderboard_by_country">
+<code class="sig-prename descclassname">handlers.leaderboard.</code><code class="sig-name descname">generate_leaderboard_by_country</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">iso</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/handlers/leaderboard.html#generate_leaderboard_by_country"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#handlers.leaderboard.generate_leaderboard_by_country" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the leaderboard and filters it by iso code.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Parameters:</dt><dd><p>r (RedisClient): Redis Client
+iso (str): Cointry iso code</p>
+</dd>
+<dt>Returns:</dt><dd><p>leaderboard (list): The leaderboard as a list of dicts</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-handlers.score">
+<span id="handlers-score-module"></span><h2>handlers.score module<a class="headerlink" href="#module-handlers.score" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="handlers.score.update_user_score">
+<code class="sig-prename descclassname">handlers.score.</code><code class="sig-name descname">update_user_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">user_id</span></em>, <em class="sig-param"><span class="n">score_worth</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/handlers/score.html#update_user_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#handlers.score.update_user_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increments the score of a given player by score_worth.
+Time complexity of incrementing the score: O(log(N)) where N is the
+number of elements in the sorted set. Time complexity of updating user
+profile: O(1).</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Parameters:</dt><dd><p>r (RedisClient): Redis Client
+user_id (guid): guid
+score_worth (float): Score to increment</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-handlers.users">
+<span id="handlers-users-module"></span><h2>handlers.users module<a class="headerlink" href="#module-handlers.users" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="handlers.users.get_rank_of_user">
+<code class="sig-prename descclassname">handlers.users.</code><code class="sig-name descname">get_rank_of_user</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">guid</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/handlers/users.html#get_rank_of_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#handlers.users.get_rank_of_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the rank of a specific user in O(log(N)), due to the use of a
+sorted set.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Parameters:</dt><dd><p>r (RedisClient): Redis Client
+user_id (guid): guid</p>
+</dd>
+<dt>Returns:</dt><dd><p>rank (int): The rank of the given user</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt id="handlers.users.get_user_profile">
+<code class="sig-prename descclassname">handlers.users.</code><code class="sig-name descname">get_user_profile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">guid</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/handlers/users.html#get_user_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#handlers.users.get_user_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns detailed information about a given user.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Parameters:</dt><dd><p>r (RedisClient): Redis Client
+guid (guid): guid</p>
+</dd>
+<dt>Returns:</dt><dd><p>user (dict): The user object as a dict.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt id="handlers.users.register_user">
+<code class="sig-prename descclassname">handlers.users.</code><code class="sig-name descname">register_user</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">user_id</span></em>, <em class="sig-param"><span class="n">display_name</span></em>, <em class="sig-param"><span class="n">points</span></em>, <em class="sig-param"><span class="n">rank</span></em>, <em class="sig-param"><span class="n">country</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/handlers/users.html#register_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#handlers.users.register_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores the json fields of user data in a redis hash.
+Stores the country iso code of a user in a redis set
+Adds the user to the leaderboard using player:&lt;guid&gt;
+as the key and the points as the value.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Parameters:</dt><dd><p>r (RedisClient): Redis Client
+user_id (guid): guid
+display_name (str): Display Name
+points (float): Initial points
+rank (int): Initial rank, will be overriden once added
+to the leaderboard.
+country (str): Country iso code</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-handlers">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-handlers" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">gjg-backend-challenge</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">handlers package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-handlers.leaderboard">handlers.leaderboard module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-handlers.score">handlers.score module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-handlers.users">handlers.users module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-handlers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to handlers’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Deniz Gokcin.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/handlers.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
