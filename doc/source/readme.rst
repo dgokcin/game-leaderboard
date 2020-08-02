@@ -1,5 +1,3 @@
-|Python| |Flask| |Redis|
-
 gjg-backend-challenge
 =====================
 
@@ -59,7 +57,3 @@ Notes:
 -  Although there are multiple worker nodes, the response time could be
    improved if more powerful droplets are used.
 
-.. |Build/Tests| image:: https://github.com/dgokcin/gjg-backend-challenge/workflows/Build/Tests/badge.svg
-.. |Python| image:: https://img.shields.io/badge/Python-v^3.7.1-blue.svg?logo=python&longCache=true&logoColor=white&colorB=5e81ac&style=flat-square&colorA=4c566a
-.. |Flask| image:: https://img.shields.io/badge/Flask-v^1.0.2-blue.svg?longCache=true&logo=flask&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a
-.. |Redis| image:: https://img.shields.io/badge/Redis-v3.0.1-red.svg?longCache=true&style=flat-square&logo=redis&logoColor=white&colorA=4c566a&colorB=bf616a
