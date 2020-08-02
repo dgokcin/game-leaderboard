@@ -1,4 +1,4 @@
-![Python application](https://github.com/dgokcin/gjg-backend-challenge/workflows/Python%20application/badge.svg)
+![Build/Tests](https://github.com/dgokcin/gjg-backend-challenge/workflows/Build/Tests/badge.svg)
 ![Python](https://img.shields.io/badge/Python-v^3.7.1-blue.svg?logo=python&longCache=true&logoColor=white&colorB=5e81ac&style=flat-square&colorA=4c566a)
 ![Flask](https://img.shields.io/badge/Flask-v^1.0.2-blue.svg?longCache=true&logo=flask&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
 ![Redis](https://img.shields.io/badge/Redis-v3.0.1-red.svg?longCache=true&style=flat-square&logo=redis&logoColor=white&colorA=4c566a&colorB=bf616a)
@@ -11,12 +11,11 @@ A REST API endpoint, that manages a game which uses a leaderboard with players s
 - docker
 - docker-compose
 
-## Tech Stack
+### Used Containers
 ```
 flask: Contains the Flask application and uWSGI application server.
 nginx: Contains the Nginx web server.
 redis: Stores information about users & handles leaderboard interactions.
-github actions: Automatically running ptyests and deploying to DockerHub.
 ```
 - The containers can be found under my [docker-hub account](https://hub.docker.com/u/denizgokcin)
 
@@ -33,6 +32,7 @@ github actions: Automatically running ptyests and deploying to DockerHub.
 - You can get the leaderboard from http://178.62.26.184/leaderboard
 - You can update a users score by posting to http://178.62.26.184/score/submit following the syntax in [this document](https://github.com/dgokcin/gjg-backend-challenge/blob/master/doc/gjg-backend-coding-challenge.pdf)
 
-
+### Notes:
+- GitHub Actions are used for automatically running pytests and deploying to DockerHub.
 ### Future Work:
-- The response time might be improved if more powerful droplets are used. 
+- Although there are multiple worker nodes, the response time could be improved if more powerful droplets are used.
