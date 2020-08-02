@@ -20,7 +20,7 @@ redis: Stores information about users & handles leaderboard interactions.
 - The containers can be found under my [docker-hub account](https://hub.docker.com/u/denizgokcin)
 
 ### Documentation
-- The documentation can be found [here]()
+- The developer documentation can be found [here](https://github.com/dgokcin/gjg-backend-challenge/blob/master/doc/gjg-backend-challenge.pdf)
 
 ### Building
 `docker-compose up -d`
