@@ -17,10 +17,10 @@ flask: Contains the Flask application and uWSGI application server.
 nginx: Contains the Nginx web server.
 redis: Stores information about users & handles leaderboard interactions.
 ```
-- The containers can be found under my [docker-hub account](https://hub.docker.com/u/denizgokcin)
+- The containers can be found under my [docker-hub account.](https://hub.docker.com/u/denizgokcin)
 
 ### Documentation
-- The developer documentation can be found [here](https://github.com/dgokcin/gjg-backend-challenge/blob/master/doc/gjg-backend-challenge.pdf)
+- The documentation can be found [here.](https://github.com/dgokcin/gjg-backend-challenge/blob/master/doc/gjg-backend-challenge.pdf)
 
 ### Building
 `docker-compose up -d`
@@ -37,5 +37,6 @@ redis: Stores information about users & handles leaderboard interactions.
 
 ### Notes:
 - GitHub Actions are used for automatically running pytests and deploying to DockerHub.
+
 ### Future Work:
 - Although there are multiple worker nodes, the response time could be improved if more powerful droplets are used.
