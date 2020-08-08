@@ -26,4 +26,4 @@ services:
       - "./container_logs/flask/log:/var/log/wsgi"
 volumes:
   container_volumes:
-  container_loggs:
+  container_logs:
