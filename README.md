@@ -31,12 +31,29 @@ redis: Stores information about users & handles leaderboard interactions.
 `docker stack deploy -c docker-compose-swarm.yml gjg`
 
 ### Testing the endpoints
-- To test the endpoints, you need to add users to the leaderboard. You can achieve this by posting [sample-data.json](https://github.com/dgokcin/gjg-backend-challenge/blob/master/sample-data.json) to http://178.62.26.184/user/create. You can also add individual users using the same endpoint.
+- The leaderboard is already filled with 50k random users.
+- You can create more random data by using the following snippet in (https://www.json-generator.com).
+```
+[
+  '{{repeat(50000)}}',
+  {
+    user_id: '{{guid()}}',
+    rank: '{{integer(1, 10000000)}}',
+    country: '{{random("tr", "fr", "us", "uk", "it")}}',
+    display_name: '{{firstName()}}' ,
+    points: '{{integer(1, 1000000000)}}'
+    
+  }
+]
+```
+- You can post your [sample-data.json](https://github.com/dgokcin/gjg-backend-challenge/blob/master/sample-data.json) to http://178.62.26.184/user/create. 
+- You can also add individual users using the same endpoint.
 - You can get the leaderboard from http://178.62.26.184/leaderboard
-- You can update a users score by posting to http://178.62.26.184/score/submit following the syntax in [this document](https://github.com/dgokcin/gjg-backend-challenge/blob/master/doc/gjg-backend-coding-challenge.pdf)
+- You can update a users score by posting to http://178.62.26.184/score/submit following the syntax in [this-document](https://github.com/dgokcin/gjg-backend-challenge/blob/master/doc/gjg-backend-coding-challenge.pdf)
 
 ### Notes:
 - GitHub Actions are used for automatically running pytests and deploying to DockerHub.
 
 ### Future Work:
 - Although there are multiple worker nodes, the response time could be improved if more powerful droplets are used.
+- Getting the leaderboard for all the players takes short time but updating in with display name, country takes a long time since it depends on the number of players in the leaderboard. Could be improved but I do not think it is necessary since you only need to see detailed information about the first few players on a leaderboard.

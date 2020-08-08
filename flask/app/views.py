@@ -41,19 +41,24 @@ def create_user():
 @app.route('/profile/<guid>', methods=['GET'])
 def get_user_profile(guid):
     user = users.get_user_profile(r, guid)
-    return json.dumps(user)
+    return jsonify(user)
 
+
+@app.route('/leaderboard/all', methods=['GET'])
+def get_all_leaderboard():
+    lb = leaderboard.generate_all_leaderboard(r)
+    return jsonify(lb)
 
 @app.route('/leaderboard', methods=['GET'])
 def get_leaderboard():
     lb = leaderboard.generate_leaderboard(r)
-    return json.dumps(lb)
+    return jsonify(lb)
 
 
 @app.route('/leaderboard/<iso>', methods=['GET'])
 def get_leaderboard_by_country(iso):
     lb = leaderboard.generate_leaderboard_by_country(r, iso)
-    return json.dumps(lb)
+    return jsonify(lb)
 
 
 @app.route('/score/submit', methods=['POST'])
