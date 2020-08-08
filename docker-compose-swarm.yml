@@ -11,6 +11,8 @@ services:
       - redis
     networks:
       - app
+    volumes:
+      - "./container_logs/flask/log:/var/log/wsgi"
   redis:
     image: redis:6.0.6
     command: redis-server --requirepass root
@@ -20,6 +22,8 @@ services:
         condition: on-failure
     networks:
       - app
+    volumes:
+      - "./container_volumes/redis:/data"
 
   nginx:
     image: denizgokcin/gjg-backend-challenge-nginx
@@ -33,6 +37,12 @@ services:
       - flask
     networks:
       - app
+    volumes:
+      - "./container_logs/nginx/log:/var/log/nginx"
+volumes:
+  container_volumes:
+  container_loggs:
+
 networks:
   app:
     driver: overlay

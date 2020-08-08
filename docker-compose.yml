@@ -3,9 +3,11 @@ version: "3.7"
 services:
   redis:
     image: redis:6.0.6
-    command: redis-server --requirepass root
+    command: redis-server --requirepass root --appendonly yes
     container_name: redis
     restart: always
+    volumes:
+      - "./container_volumes/redis:/data"
   nginx:
     image: denizgokcin/gjg-backend-challenge-nginx
     build: ./nginx
@@ -22,3 +24,6 @@ services:
     restart: always
     volumes:
       - "./container_logs/flask/log:/var/log/wsgi"
+volumes:
+  container_volumes:
+  container_loggs:
