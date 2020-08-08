@@ -6,6 +6,6 @@ MarkupSafe==1.1.0
 redis==3.0.1
 fakeredis==1.4.1
 uWSGI==2.0.17.1
-Werkzeug==0.14.1
+Werkzeug==0.15.3
 pytest==5.4.3
 
