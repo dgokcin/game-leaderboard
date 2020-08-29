@@ -4,7 +4,7 @@
 ![Redis](https://img.shields.io/badge/Redis-v3.0.1-red.svg?longCache=true&style=flat-square&logo=redis&logoColor=white&colorA=4c566a&colorB=bf616a)
 
 
-# gjg-backend-challenge
+# redis-flask-nginx-leaderboard
 A REST API endpoint, that manages a game which uses a leaderboard with players submitting new scores from around the world.
 
 ### Requirements
